@@ -1,4 +1,4 @@
-# Onde ta? [![Build Status](https://travis-ci.org/filipelinhares/onde-ta.svg?branch=master)
+# Onde ta? ![Build Status](https://travis-ci.org/filipelinhares/onde-ta.svg?branch=master)
 > Rastreie suas encomendas.
 
 <p align="center">
