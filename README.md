@@ -18,5 +18,8 @@ $ onde-ta --help
     $ onde-ta RE108441783BR
 ```
 
+## Todo
+- [ ] Add local storage to save codes by keywords
+
 ## License
 [MIT](LICENSE.md) © Filipe LInhares
