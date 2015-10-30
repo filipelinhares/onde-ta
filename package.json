@@ -1,6 +1,6 @@
 {
   "name": "onde-ta",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Rastreie suas encomendas",
   "license": "MIT",
   "repository": "filipe/onde-ta",
@@ -11,10 +11,14 @@
   "bin": {
     "onde-ta": "cli.js"
   },
-  "keywords": ["correios", "busca"],
+  "keywords": [
+    "correios",
+    "busca"
+  ],
   "dependencies": {
     "chalk": "^1.1.1",
     "elegant-spinner": "^1.0.1",
+    "got": "^5.0.0",
     "log-update": "^1.0.2",
     "meow": "^3.4.2",
     "multiline": "^1.0.2",
