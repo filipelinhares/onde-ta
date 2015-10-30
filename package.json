@@ -1,0 +1,33 @@
+{
+  "name": "onde-ta",
+  "version": "1.0.0",
+  "description": "Rastreie suas encomendas",
+  "license": "MIT",
+  "repository": "filipe/onde-ta",
+  "author": "Filipe <filipelinhares.com>",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "bin": {
+    "onde-ta": "cli.js"
+  },
+  "keywords": ["correios", "busca"],
+  "dependencies": {
+    "chalk": "^1.1.1",
+    "elegant-spinner": "^1.0.1",
+    "log-update": "^1.0.2",
+    "meow": "^3.4.2",
+    "multiline": "^1.0.2",
+    "repeating": "^2.0.0",
+    "string-length": "^1.0.1"
+  },
+  "scripts": {
+    "test": "xo"
+  },
+  "devDependencies": {
+    "xo": "^0.10.1"
+  },
+  "xo": {
+    "space": true
+  }
+}
