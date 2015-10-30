@@ -6,18 +6,52 @@ var chalk = require('chalk');
 var strl = require('string-length');
 var repeat = require('repeating');
 var meow = require('meow');
+var storage = require('./storage');
 var CODE_REGEX = /[a-z]{2}[0-9]{9}[a-z]{2}/ig;
+
+var command;
 
 var cli = meow({
   help: [
-    'Usage',
-    '  $ onde-ta 12312bc2321br'
+  'Usar',
+  '  $ onde-ta RE108441783BR',
+  '',
+  '  Salvar encomendas e visualizar encomenda salva',
+  '  $ onde-ta RE108441783BR --save batman',
+  '  $ onde-ta batman',
+  '',
+  '  Remover encomendas',
+  '  $ onde-ta --remove batman',
+  '  $ onde-ta --clear',
+  '',
+  'Opções',
+  '  --save     Salva o código de uma encomenda com um nome',
+  '  --remove   Remove a encomenda selecionada',
+  '  --clear    Remove todas as encomendas salvas'
   ]
 });
 
-if (!cli.input[0] || !CODE_REGEX.test(cli.input[0])) {
-  cli.showHelp();
-  process.exit(1);
+if (!CODE_REGEX.test(cli.input[0]) && cli.input[0]) {
+  command = storage.get(cli.input[0]);
+
+} else if (!cli.input[0]) {
+
+  if (cli.flags.clear) {
+    storage.clear();
+  } else {
+    cli.showHelp();
+  }
+
+} else {
+  command = cli.input[0]
+}
+
+if (cli.flags.save) {
+  storage.save(cli.flags.save, cli.input[0])
+}
+
+if (cli.flags.remove) {
+  storage.del(cli.flags.remove);
 }
 
 function parse(data) {
@@ -38,17 +72,17 @@ function parse(data) {
   return console.log(output.join('\n'));
 }
 
-got('http://developers.agenciaideias.com.br/correios/rastreamento/json/' + cli.input[0], {json: true})
+got('http://developers.agenciaideias.com.br/correios/rastreamento/json/' + command, {json: true})
   .then(function (response) {
     if (Array.isArray(response.body)) {
       response.body.forEach(function (data) {
         parse(data);
       });
     } else {
-      console.log(chalk.red.bold('Houve algum erro, seu código está correto? ' + cli.input[0]));
+      console.log(chalk.red.bold('Houve algum erro, seu código está correto? ' + command));
     }
   })
   .catch(function () {
-    console.log(chalk.red.bold('Houve algum erro, seu código está correto? ' + cli.input[0]));
+    console.log(chalk.red.bold('Houve algum erro, seu código está correto? ' + command));
     process.exit(1);
   });

@@ -16,10 +16,23 @@ $ onde-ta --help
 
   Usage
     $ onde-ta RE108441783BR
+
+    Salvar encomendas e visualizar encomenda salva
+    $ onde-ta RE108441783BR --save batman
+    $ onde-ta batman
+
+    Remover encomendas
+    $ onde-ta --remove batman
+    $ onde-ta --clear
+
+  Options
+    --save     Salva o código de uma encomenda com um nome
+    --remove   Remove a encomenda selecionada
+    --clear    Remove todas as encomendas salvas
 ```
 
 ## Todo
-- [ ] Add local storage to save codes by keywords
+- [x] Add local storage to save codes by keywords
 
 ## License
 [MIT](LICENSE.md) © Filipe LInhares

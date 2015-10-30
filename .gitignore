@@ -35,3 +35,6 @@ nbproject
 .idea
 node_modules
 dist
+
+# Project folders
+onde-ta-db
