@@ -2,9 +2,10 @@
 
 var storage = require('node-persist');
 var chalk = require('chalk');
+var path = require('path');
 
 storage.initSync({
-  dir: __dirname + '/onde-ta-db'
+  dir: path.resolve(__dirname, 'onde-ta-db')
 });
 
 exports.save = function (key, value) {
@@ -13,16 +14,15 @@ exports.save = function (key, value) {
     storage.persistSync();
     process.exit(1);
   });
-}
+};
 
 exports.get = function (key) {
   if (storage.getItemSync(key)) {
     return storage.getItemSync(key);
-  } else {
-    console.log(chalk.red('✖ Você ainda não salvou ' + chalk.bold(key) + ', use a flag ' + chalk.bold('"--save ' + key) + '" para isso.'));
-    process.exit(1);
   }
-}
+  console.log(chalk.red('✖ Você ainda não salvou ' + chalk.bold(key) + ', use a flag ' + chalk.bold('"--save ' + key) + '" para isso.'));
+  process.exit(1);
+};
 
 exports.del = function (key) {
   storage.removeItem(key, function () {
@@ -30,7 +30,7 @@ exports.del = function (key) {
     storage.persistSync();
     process.exit(1);
   });
-}
+};
 
 exports.clear = function () {
   storage.clear(function () {
@@ -38,5 +38,4 @@ exports.clear = function () {
     storage.persistSync();
     process.exit(1);
   });
-}
-
+};

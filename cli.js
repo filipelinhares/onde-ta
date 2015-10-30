@@ -13,45 +13,38 @@ var command;
 
 var cli = meow({
   help: [
-  'Usar',
-  '  $ onde-ta RE108441783BR',
-  '',
-  '  Salvar encomendas e visualizar encomenda salva',
-  '  $ onde-ta RE108441783BR --save batman',
-  '  $ onde-ta batman',
-  '',
-  '  Remover encomendas',
-  '  $ onde-ta --remove batman',
-  '  $ onde-ta --clear',
-  '',
-  'Opções',
-  '  --save     Salva o código de uma encomenda com um nome',
-  '  --remove   Remove a encomenda selecionada',
-  '  --clear    Remove todas as encomendas salvas'
+    'Usar',
+    '  $ onde-ta RE108441783BR',
+    '',
+    '  Salvar encomendas e visualizar encomenda salva',
+    '  $ onde-ta RE108441783BR --save batman',
+    '  $ onde-ta batman',
+    '',
+    '  Remover encomendas',
+    '  $ onde-ta --remove batman',
+    '  $ onde-ta --clear',
+    '',
+    'Opções',
+    '  --save     Salva o código de uma encomenda com um nome',
+    '  --remove   Remove a encomenda selecionada',
+    '  --clear    Remove todas as encomendas salvas'
   ]
 });
 
 if (!CODE_REGEX.test(cli.input[0]) && cli.input[0]) {
   command = storage.get(cli.input[0]);
-
-} else if (!cli.input[0]) {
-
-  if (cli.flags.clear) {
-    storage.clear();
-  } else {
-    cli.showHelp();
-  }
-
+} else if (cli.input[0]) {
+  command = cli.input[0];
+} else if (cli.flags.clear) {
+  storage.clear();
+} else if (cli.flags.remove) {
+  storage.del(cli.flags.remove);
 } else {
-  command = cli.input[0]
+  cli.showHelp();
 }
 
 if (cli.flags.save) {
-  storage.save(cli.flags.save, cli.input[0])
-}
-
-if (cli.flags.remove) {
-  storage.del(cli.flags.remove);
+  storage.save(cli.flags.save, cli.input[0]);
 }
 
 function parse(data) {
