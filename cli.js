@@ -1,15 +1,11 @@
 #!/usr/bin/env node
 'use strict';
 
-var spinner = require('elegant-spinner');
-var logUpdate = require('log-update');
-var frame = spinner();
 var got = require('got');
 var chalk = require('chalk');
 var strl = require('string-length');
 var repeat = require('repeating');
 var meow = require('meow');
-var animation;
 var CODE_REGEX = /[a-z]{2}[0-9]{9}[a-z]{2}/ig;
 
 var cli = meow({
@@ -22,18 +18,6 @@ var cli = meow({
 if (!cli.input[0] || !CODE_REGEX.test(cli.input[0])) {
   cli.showHelp();
   process.exit(1);
-}
-
-function loading() {
-  // Will start a fancy loading animation
-  frame = spinner();
-  animation = setInterval(function () {
-    logUpdate(frame());
-  }, 100);
-}
-
-function loaded() {
-  clearInterval(animation);
 }
 
 function parse(data) {
@@ -51,14 +35,11 @@ function parse(data) {
     chalk.yellow('└') + chalk.yellow(repeat('─', bottomSize)) + chalk.yellow('┘')
   ];
 
-  loaded();
-  return logUpdate(output.join('\n'));
+  return console.log(output.join('\n'));
 }
 
-loading();
 got('http://developers.agenciaideias.com.br/correios/rastreamento/json/' + cli.input[0], {json: true})
   .then(function (response) {
-    console.log(typeof response.body);
     if (Array.isArray(response.body)) {
       response.body.forEach(function (data) {
         parse(data);
