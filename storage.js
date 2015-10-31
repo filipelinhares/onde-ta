@@ -39,3 +39,17 @@ exports.clear = function () {
     process.exit(1);
   });
 };
+
+exports.list = function () {
+  var packages = storage.keys();
+  if (packages.length === 0) {
+    console.log(chalk.red('✖ Você ainda não tem nenhuma encomenda cadastrada use a flag ' + chalk.bold('--save') + ' para isso.'));
+    process.exit(1);
+  }
+
+  console.log(chalk.dim('Suas encomendas:'));
+  packages.forEach(function (pack) {
+    console.log(chalk.bold('⇢ ') + chalk.yellow(pack) + ' - ' + storage.getItemSync(pack));
+    process.exit(1);
+  });
+};

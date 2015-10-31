@@ -24,10 +24,14 @@ var cli = meow({
     '  $ onde-ta --remove batman',
     '  $ onde-ta --clear',
     '',
-    'Opções',
+    '  Listar encomendas',
+    '  $ onde-ta --list',
+    '',
+    ' Opções',
     '  --save     Salva o código de uma encomenda com um nome',
     '  --remove   Remove a encomenda selecionada',
-    '  --clear    Remove todas as encomendas salvas'
+    '  --clear    Remove todas as encomendas salvas',
+    '  --list     Lista todas as suas encomendas salvas com --save'
   ]
 });
 
@@ -39,6 +43,8 @@ if (!CODE_REGEX.test(cli.input[0]) && cli.input[0]) {
   storage.clear();
 } else if (cli.flags.remove) {
   storage.del(cli.flags.remove);
+} else if (cli.flags.list) {
+  storage.list();
 } else {
   cli.showHelp();
 }

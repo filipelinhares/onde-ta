@@ -25,10 +25,14 @@ $ onde-ta --help
     $ onde-ta --remove batman
     $ onde-ta --clear
 
+    Listar encomendas
+    $ onde-ta --save
+
   Options
     --save     Salva o código de uma encomenda com um nome
     --remove   Remove a encomenda selecionada
     --clear    Remove todas as encomendas salvas
+    --list     Lista todas as suas encomendas salvas com --save
 ```
 
 ## Todo
