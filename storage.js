@@ -50,6 +50,6 @@ exports.list = function () {
   console.log(chalk.dim('Suas encomendas:'));
   packages.forEach(function (pack) {
     console.log(chalk.bold('⇢ ') + chalk.yellow(pack) + ' - ' + storage.getItemSync(pack));
-    process.exit(1);
   });
+  process.exit(1);
 };
