@@ -1,8 +1,12 @@
-# Onde ta? ![Build Status](https://travis-ci.org/filipelinhares/onde-ta.svg?branch=master)
-> Rastreie suas encomendas.
+<h1 align="center">
+  <img src="images/logo.png" height="200" alt="onde-ta" />
+</h1>
+
+> Rastreie suas encomendas
+![Build Status](https://travis-ci.org/filipelinhares/onde-ta.svg?branch=master)
 
 <p align="center">
-	<img src="images/screen.png" alt="Screenshot">
+  <img src="images/preview.gif"  alt="onde-ta preview" />
 </p>
 
 ## Install
