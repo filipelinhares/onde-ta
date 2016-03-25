@@ -26,7 +26,7 @@ exports.get = function (key) {
 
 exports.del = function (key) {
   storage.removeItem(key, function () {
-    console.log(chalk.red('✖ ' + chalk.bold(key) + ' removido com sucesso!'));
+    console.log(chalk.green('✔ ' + chalk.bold(key) + ' removido com sucesso!'));
     storage.persistSync();
     process.exit(1);
   });
@@ -34,7 +34,7 @@ exports.del = function (key) {
 
 exports.clear = function () {
   storage.clear(function () {
-    console.log(chalk.green('✔ Todos as encomendas foram apagadas'));
+    console.log(chalk.green('✔ Todos os códigos foram apagadas'));
     storage.persistSync();
     process.exit(1);
   });
@@ -43,11 +43,11 @@ exports.clear = function () {
 exports.list = function () {
   var packages = storage.keys();
   if (packages.length === 0) {
-    console.log(chalk.red('✖ Você ainda não tem nenhuma encomenda cadastrada use a flag ' + chalk.bold('--save') + ' para isso.'));
+    console.log(chalk.red('✖ Você ainda não tem nenhum código cadastrado use a flag ' + chalk.bold('--save') + ' para isso.'));
     process.exit(1);
   }
 
-  console.log(chalk.dim('Suas encomendas:'));
+  console.log(chalk.dim('Seus códigos:'));
   packages.forEach(function (pack) {
     console.log(chalk.bold('⇢ ') + chalk.yellow(pack) + ' - ' + storage.getItemSync(pack));
   });

@@ -13,25 +13,25 @@ var command;
 
 var cli = meow({
   help: [
-    'Usar',
+    'Como usar:',
     '  $ onde-ta RE108441783BR',
     '',
-    '  Salvar encomendas e visualizar encomenda salva',
+    '  Salvar e visualizar códigos de rastreio',
     '  $ onde-ta RE108441783BR --save batman',
     '  $ onde-ta batman',
     '',
-    '  Remover encomendas',
+    '  Remover um código salvo',
     '  $ onde-ta --remove batman',
     '  $ onde-ta --clear',
     '',
-    '  Listar encomendas',
+    '  Listar todos os códigos salvos',
     '  $ onde-ta --list',
     '',
     ' Opções',
-    '  --save     Salva o código de uma encomenda com um nome',
-    '  --remove   Remove a encomenda selecionada',
-    '  --clear    Remove todas as encomendas salvas',
-    '  --list     Lista todas as suas encomendas salvas com --save'
+    '  --save     Salva um código de rastreio com nome',
+    '  --remove   Remove o código selecionado',
+    '  --clear    Remove todos os códigos salvos',
+    '  --list     Listar todos os códigos salvos com um nome'
   ]
 });
 
