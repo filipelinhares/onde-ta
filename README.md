@@ -30,17 +30,17 @@ $ onde-ta --help
     $ onde-ta --clear
 
     Listar todos os códigos salvos
-    $ onde-ta --save
+    $ onde-ta --list
 
   Opções
-    --save     Salva um código de rastreio com nome
-    --remove   Remove o código selecionado
-    --clear    Remove todos os códigos salvos
-    --list     Listar todos os códigos salvos com um nome
+    -s, --save     Salva um código de rastreio com nome
+    -r, --remove   Remove o código selecionado
+    -c, --clear    Remove todos os códigos salvos
+    -l, --list     Listar todos os códigos salvos com um nome
 ```
 
 ## Todo
 - [x] Add local storage to save codes by keywords
 
 ## License
-[MIT](LICENSE.md) © Filipe LInhares
+[MIT](LICENSE.md) © Filipe Linhares

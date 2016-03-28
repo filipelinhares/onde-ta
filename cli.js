@@ -11,8 +11,7 @@ var CODE_REGEX = /[a-z]{2}[0-9]{9}[a-z]{2}/ig;
 
 var command;
 
-var cli = meow({
-  help: [
+var cli = meow([
     'Como usar:',
     '  $ onde-ta RE108441783BR',
     '',
@@ -28,12 +27,19 @@ var cli = meow({
     '  $ onde-ta --list',
     '',
     ' Opções',
-    '  --save     Salva um código de rastreio com nome',
-    '  --remove   Remove o código selecionado',
-    '  --clear    Remove todos os códigos salvos',
-    '  --list     Listar todos os códigos salvos com um nome'
-  ]
-});
+    '  -s, --save     Salva um código de rastreio com nome',
+    '  -r, --remove   Remove o código selecionado',
+    '  -c, --clear    Remove todos os códigos salvos',
+    '  -l, --list     Listar todos os códigos salvos com um nome'
+  ].join('\n'),
+  {
+    alias: {
+      s: 'save',
+      r: 'remove',
+      c: 'clear',
+      l: 'list'
+    }
+  });
 
 if (!CODE_REGEX.test(cli.input[0]) && cli.input[0]) {
   command = storage.get(cli.input[0]);
