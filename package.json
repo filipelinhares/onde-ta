@@ -1,6 +1,6 @@
 {
   "name": "onde-ta",
-  "version": "1.3.4",
+  "version": "1.4.4",
   "description": "Rastreie suas encomendas",
   "license": "MIT",
   "repository": "filipe/onde-ta",
@@ -24,7 +24,8 @@
     "multiline": "^1.0.2",
     "node-persist": "0.0.8",
     "repeating": "^2.0.0",
-    "string-length": "^1.0.1"
+    "string-length": "^1.0.1",
+    "update-notifier": "^0.6.3"
   },
   "scripts": {
     "test": "xo"

@@ -7,6 +7,7 @@ var strl = require('string-length');
 var repeat = require('repeating');
 var meow = require('meow');
 var storage = require('./storage');
+var updateNotifier = require('update-notifier');
 var CODE_REGEX = /[a-z]{2}[0-9]{9}[a-z]{2}/ig;
 
 var command;
@@ -40,6 +41,8 @@ var cli = meow([
       l: 'list'
     }
   });
+
+updateNotifier({pkg: cli.pkg}).notify();
 
 if (!CODE_REGEX.test(cli.input[0]) && cli.input[0]) {
   command = storage.get(cli.input[0]);
