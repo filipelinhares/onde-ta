@@ -20,7 +20,6 @@ exports.get = function (key) {
   if (storage.getItemSync(key)) {
     return storage.getItemSync(key);
   }
-
   process.stderr.write(`${chalk.red('✖')} ${chalk.bold(key)} não existe, use ${chalk.bold('onde-ta --save SEU_CÓDIGO', key)} para criar`);
   process.exit(1);
 };
@@ -49,7 +48,7 @@ exports.list = function () {
   }
 
   packages.forEach(function (pack) {
-    process.stdout.write(`${chalk.bold('⇢ ', pack)} ${storage.getItemSync(pack)}`);
+    process.stdout.write(`\n ${chalk.bold('⇢ ', pack)}: ${storage.getItemSync(pack)}`);
   });
   process.exit(1);
 };

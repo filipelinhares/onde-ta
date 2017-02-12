@@ -10,10 +10,8 @@ const storage = require('./storage');
 const updateNotifier = require('update-notifier');
 const CODE_REGEX = /[a-z]{2}[0-9]{9}[a-z]{2}/ig;
 
-const CORREIOS_SERVICE_URL = 'https://correios-tracking.now.sh/';
-
-let command;
 const bold = chalk.bold;
+const CORREIOS_SERVICE_URL = 'https://correios-tracking.now.sh/';
 
 const cli = meow(`
   Como usar:
@@ -45,30 +43,6 @@ const cli = meow(`
     }
   });
 
-updateNotifier({pkg: cli.pkg}).notify();
-
-function run() {
-  if (!CODE_REGEX.test(cli.input[0]) && cli.input[0]) {
-    command = storage.get(cli.input[0]);
-  } else if (cli.input[0]) {
-    command = cli.input[0];
-  } else if (cli.flags.clear) {
-    storage.clear();
-  } else if (cli.flags.remove) {
-    storage.del(cli.flags.remove);
-  } else if (cli.flags.list) {
-    storage.list();
-  } else {
-    cli.showHelp();
-  }
-
-  if (cli.flags.save) {
-    storage.save(cli.flags.save, cli.input[0]);
-  }
-}
-
-run(cli);
-
 function parse(data) {
   // `data.detalhe` is optional
   data.detalhe = data.detalhe || '';
@@ -91,13 +65,13 @@ function parse(data) {
 ┆
 ┆      ${details}
 ┆    └ ${repeat('─', bottomSize)} ┘
-┆`;
+`;
 
   return output;
 }
 
-function fetchTracking({url, userInput}) {
-  got(url + userInput, {json: true})
+function fetchTracking(command) {
+  got(CORREIOS_SERVICE_URL + command, {json: true})
     .then(function (response) {
       if (response.body[0].erro) {
         process.stdout.write(chalk.red.bold('Erro! ' + response.body[0].erro));
@@ -116,5 +90,31 @@ function fetchTracking({url, userInput}) {
     });
 }
 
-fetchTracking({url: CORREIOS_SERVICE_URL, userInput: command});
+process.on('SIGINT', function () {
+  process.stdout.write(chalk.red.bold('\n Operação cancelada!'));
+  process.exit(1);
+});
 
+updateNotifier({pkg: cli.pkg}).notify();
+
+function run() {
+  if (!CODE_REGEX.test(cli.input[0]) && cli.input[0]) {
+    fetchTracking(storage.get(cli.input[0]));
+  } else if (cli.input[0]) {
+    fetchTracking(cli.input[0]);
+  } else if (cli.flags.clear) {
+    storage.clear();
+  } else if (cli.flags.remove) {
+    storage.del(cli.flags.remove);
+  } else if (cli.flags.list) {
+    storage.list();
+  } else {
+    cli.showHelp();
+  }
+
+  if (cli.flags.save) {
+    storage.save(cli.flags.save, cli.input[0]);
+  }
+}
+
+run(cli);
