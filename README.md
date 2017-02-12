@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="images/logo.png" height="200" alt="onde-ta" />
+  <img src="images/logo.png" alt="onde-ta" width="300" />
 </h1>
 
 > Rastreie suas encomendas
@@ -39,8 +39,8 @@ $ onde-ta --help
     -l, --list     Listar todos os códigos salvos com um nome
 ```
 
-## Todo
-- [x] Add local storage to save codes by keywords
+## Service
+- [Correios Tracking](https://github.com/filipelinhares/correios-tracking)
 
 ## License
 [MIT](LICENSE.md) © Filipe Linhares

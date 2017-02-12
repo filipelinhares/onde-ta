@@ -65,7 +65,7 @@ function parse(data) {
 ┆
 ┆      ${details}
 ┆    └ ${repeat('─', bottomSize)} ┘
-`;
+┆`;
 
   return output;
 }
