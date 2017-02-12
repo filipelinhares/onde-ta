@@ -81,23 +81,22 @@ function parse(data) {
   const topSize = bottomSize - (strl(data.data) + strl(data.hora)) - 4;
 
   const details = (data.detalhe) ?
-        `${data.descricao}
-  ┆      ${data.detalhe}`
+      `${data.descricao}
+┆      ${data.detalhe}`
                 :
                   data.descricao
                 ;
 
   const output = `
-  ├┈ • ┌ ${bold(data.data)} - ${bold(data.hora)} ${repeat('─', topSize)} ┐
-  ┆      ${bold(data.local)} - ${bold(data.cidade)}, ${bold(data.uf)}
-  ┆
-  ┆      ${details}
-  ┆    └ ${repeat('─', bottomSize)} ┘
-  ┆`;
+├┈ • ┌ ${bold(data.data)} - ${bold(data.hora)} ${repeat('─', topSize)} ┐
+┆      ${bold(data.local)} - ${bold(data.cidade)}, ${bold(data.uf)}
+┆
+┆      ${details}
+┆    └ ${repeat('─', bottomSize)} ┘
+┆`;
 
   return output;
 }
-
 
 function fetchTracking ({ url, userInput}) {
   got(url + userInput, { json: true })
@@ -110,14 +109,15 @@ function fetchTracking ({ url, userInput}) {
         });
 
       } else {
-        console.log(chalk.red.bold('Erro! ' + response.body[0].erro));
+        process.stdout.write(chalk.red.bold('Erro! ' + response.body[0].erro));
       }
     })
     .catch(function (err) {
-      if (cli.flags.verbose) console.error(err);
-      console.log(chalk.red.bold('Erro!'));
+      if (cli.flags.verbose) process.stderr.write(err);
+      process.stdout.write(chalk.red.bold('Erro!'));
       process.exit(1);
     });
 }
 
 fetchTracking({ url: CORREIOS_SERVICE_URL, userInput: command })
+

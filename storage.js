@@ -9,24 +9,24 @@ storage.initSync({
 });
 
 exports.save = function (key, value) {
-  storage.setItem(key, value, function () {
-    console.log(chalk.green.bold('✔ Salvo ') + chalk.bold(value) + ' como ' + chalk.bold(key));
+  storage.setItem(key, value, function (err) {
+    process.stdout.write(`${chalk.green('✔')} Salvo ${chalk.bold(value)} como ${chalk.bold(key)}`);
     storage.persistSync();
     process.exit(1);
   });
 };
 
 exports.get = function (key) {
-  if (storage.getItemSync(key)) {
+  if (storage.getItemSync(key))
     return storage.getItemSync(key);
-  }
-  console.log(chalk.red('✖ Você ainda não salvou ' + chalk.bold(key) + ', use a flag ' + chalk.bold('"--save ' + key) + '" para isso.'));
+
+  process.stderr.write(`${chalk.red('✖')} ${chalk.bold(key)} não existe, use ${chalk.bold('onde-ta --save SEU_CÓDIGO', key)} para criar`);
   process.exit(1);
 };
 
 exports.del = function (key) {
   storage.removeItem(key, function () {
-    console.log(chalk.green('✔ ' + chalk.bold(key) + ' removido com sucesso!'));
+    process.stdout.write(`${chalk.green('✔')} ${chalk.bold(key)} removido com sucesso!`);
     storage.persistSync();
     process.exit(1);
   });
@@ -34,7 +34,7 @@ exports.del = function (key) {
 
 exports.clear = function () {
   storage.clear(function () {
-    console.log(chalk.green('✔ Todos os códigos foram apagadas'));
+    process.stdout.write(chalk.green('✔ Todos os códigos foram apagadas'));
     storage.persistSync();
     process.exit(1);
   });
@@ -43,13 +43,12 @@ exports.clear = function () {
 exports.list = function () {
   var packages = storage.keys();
   if (packages.length === 0) {
-    console.log(chalk.red('✖ Você ainda não tem nenhum código cadastrado use a flag ' + chalk.bold('--save') + ' para isso.'));
+    process.stderr.write(`${chalk.red('✖')} Você não tem nenhum código cadastrado`);
     process.exit(1);
   }
 
-  console.log(chalk.dim('Seus códigos:'));
   packages.forEach(function (pack) {
-    console.log(chalk.bold('⇢ ') + chalk.yellow(pack) + ' - ' + storage.getItemSync(pack));
+    process.stdout.write(`${chalk.bold('⇢ ', pack)} ${storage.getItemSync(pack)}`);
   });
   process.exit(1);
 };
