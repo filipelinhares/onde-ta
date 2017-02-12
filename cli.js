@@ -67,7 +67,7 @@ function run() {
   }
 }
 
-run(cli)
+run(cli);
 
 function parse(data) {
   // `data.detalhe` is optional
@@ -76,14 +76,12 @@ function parse(data) {
   // Check for the longest line
   const longestLine = Math.max.apply(Math, [data.data, data.local, data.descricao, data.detalhe, `${chalk.bold(data.local)} - ${chalk.bold(data.cidade)}, ${chalk.bold(data.uf)}`].map(strl));
 
-
   const bottomSize = longestLine + 2;
   const topSize = bottomSize - (strl(data.data) + strl(data.hora)) - 4;
 
   const details = (data.detalhe) ?
       `${data.descricao}
-┆      ${data.detalhe}`
-                :
+┆      ${data.detalhe}` :
                   data.descricao
                 ;
 
@@ -98,26 +96,25 @@ function parse(data) {
   return output;
 }
 
-function fetchTracking ({ url, userInput}) {
-  got(url + userInput, { json: true })
+function fetchTracking({url, userInput}) {
+  got(url + userInput, {json: true})
     .then(function (response) {
-      if (!response.body[0].erro) {
-        let lastOnBot = response.body[0].evento.reverse();
-
-        lastOnBot.forEach(function (data) {
-          process.stdout.write(parse(data));
-        });
-
-      } else {
+      if (response.body[0].erro) {
         process.stdout.write(chalk.red.bold('Erro! ' + response.body[0].erro));
       }
+      let lastOnBot = response.body[0].evento.reverse();
+      lastOnBot.forEach(function (data) {
+        process.stdout.write(parse(data));
+      });
     })
     .catch(function (err) {
-      if (cli.flags.verbose) process.stderr.write(err);
+      if (cli.flags.verbose) {
+        process.stderr.write(err);
+      }
       process.stdout.write(chalk.red.bold('Erro!'));
       process.exit(1);
     });
 }
 
-fetchTracking({ url: CORREIOS_SERVICE_URL, userInput: command })
+fetchTracking({url: CORREIOS_SERVICE_URL, userInput: command});
 

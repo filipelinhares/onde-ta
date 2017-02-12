@@ -6,7 +6,7 @@
   "repository": "filipe/onde-ta",
   "author": "Filipe <filipelinhares.com>",
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=6"
   },
   "bin": {
     "onde-ta": "cli.js"
@@ -17,11 +17,8 @@
   ],
   "dependencies": {
     "chalk": "^1.1.1",
-    "elegant-spinner": "^1.0.1",
     "got": "^5.0.0",
-    "log-update": "^1.0.2",
     "meow": "^3.4.2",
-    "multiline": "^1.0.2",
     "node-persist": "0.0.8",
     "repeating": "^2.0.0",
     "string-length": "^1.0.1",

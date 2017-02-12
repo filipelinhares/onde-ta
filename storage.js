@@ -9,7 +9,7 @@ storage.initSync({
 });
 
 exports.save = function (key, value) {
-  storage.setItem(key, value, function (err) {
+  storage.setItem(key, value, function () {
     process.stdout.write(`${chalk.green('✔')} Salvo ${chalk.bold(value)} como ${chalk.bold(key)}`);
     storage.persistSync();
     process.exit(1);
@@ -17,8 +17,9 @@ exports.save = function (key, value) {
 };
 
 exports.get = function (key) {
-  if (storage.getItemSync(key))
+  if (storage.getItemSync(key)) {
     return storage.getItemSync(key);
+  }
 
   process.stderr.write(`${chalk.red('✖')} ${chalk.bold(key)} não existe, use ${chalk.bold('onde-ta --save SEU_CÓDIGO', key)} para criar`);
   process.exit(1);
