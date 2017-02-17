@@ -6,7 +6,8 @@
 ![Build Status](https://travis-ci.org/filipelinhares/onde-ta.svg?branch=master)
 
 <p align="center">
-  <img src="images/preview.gif"  alt="onde-ta preview" />
+  <img src="images/preview.gif"  alt="onde-ta preview" width="49%" />
+  <img src="images/output-example.png"  alt="onde-ta output preview" width="49%" />
 </p>
 
 ## Install
