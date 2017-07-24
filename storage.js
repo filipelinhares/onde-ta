@@ -3,9 +3,10 @@
 var storage = require('node-persist');
 var chalk = require('chalk');
 var path = require('path');
+var os = require('os');
 
 storage.initSync({
-  dir: path.resolve(__dirname, 'onde-ta-db')
+  dir: path.resolve(os.homedir(), '.onde-ta')
 });
 
 exports.save = function (key, value) {
