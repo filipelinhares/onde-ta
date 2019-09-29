@@ -1,14 +1,12 @@
-<h1 align="center">
-  <img src="images/logo.png" alt="onde-ta" width="300" />
-</h1>
+# onde-ta
+
+<img src="images/logo.svg" alt="Normalize Logo" align="right">
 
 > Rastreie suas encomendas
+
 ![Build Status](https://travis-ci.org/filipelinhares/onde-ta.svg?branch=master)
 
-<p align="center">
-  <img src="images/preview.gif"  alt="onde-ta preview" width="49%" />
-  <img src="images/output-example.png"  alt="onde-ta output preview" width="49%" />
-</p>
+![Print screen of onde-ta output](https://i.imgur.com/NefmzbN.png)
 
 ## Install
 ```
