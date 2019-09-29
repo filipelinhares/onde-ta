@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 'use strict';
-
 const got = require('got');
 const chalk = require('chalk');
 const strl = require('string-length');
@@ -8,12 +7,15 @@ const repeat = require('repeating');
 const meow = require('meow');
 const storage = require('./storage');
 const updateNotifier = require('update-notifier');
-const CODE_REGEX = /[a-z]{2}[0-9]{9}[a-z]{2}/ig;
+const CODE_REGEX = /[a-z]{2}[0-9]{9}[a-z]{2}/gi;
 
 const bold = chalk.bold;
-const CORREIOS_SERVICE_URL = 'https://correios-tracking.now.sh/';
+const italic = chalk.italic;
+const CORREIOS_SERVICE_URL =
+  'https://correios-tracking.filipe.now.sh/api/track?code=';
 
-const cli = meow(`
+const cli = meow(
+  `
   Como usar:
     $ onde-ta RE108441783BR
 
@@ -39,69 +41,92 @@ const cli = meow(`
       s: 'save',
       r: 'remove',
       c: 'clear',
-      l: 'list'
-    }
-  });
+      l: 'list',
+    },
+  },
+);
 
 function parse(data) {
-  // `data.detalhe` is optional
-  data.detalhe = data.detalhe || '';
+  const { locale, status, observation } = data;
 
   // Check for the longest line
-  const longestLine = Math.max.apply(Math, [data.data, data.local, data.descricao, data.detalhe, `${chalk.bold(data.local)} - ${chalk.bold(data.cidade)}, ${chalk.bold(data.uf)}`].map(strl));
+  const longestLine = Math.max.apply(
+    Math,
+    [
+      locale.state,
+      locale.city,
+      observation.from,
+      observation.to,
+      `${bold(locale.city)}/${bold(locale.state)}`,
+      `${chalk.bold(locale.city)}/${chalk.bold(locale.state)}`,
+    ].map(strl),
+  );
 
-  const bottomSize = longestLine + 2;
-  const topSize = bottomSize - (strl(data.data) + strl(data.hora)) - 4;
+  const bottomSize = longestLine + 3;
+  const topSize = bottomSize;
 
-  const details = (data.detalhe) ?
-      `${data.descricao}
-┆      ${data.detalhe}` :
-                  data.descricao
-                ;
+  const { from, to } = observation;
 
   const output = `
-├┈ • ┌ ${bold(data.data)} - ${bold(data.hora)} ${repeat('─', topSize)} ┐
-┆      ${bold(data.local)} - ${bold(data.cidade)}, ${bold(data.uf)}
+├┈ • [${bold(data.trackedAt)}]
 ┆
-┆      ${details}
-┆    └ ${repeat('─', bottomSize)} ┘
+┆  ${bold(italic(status))}
+┆
+┆  ┌ ${repeat('─', topSize)} ┐
+┆     ${bold(locale.city)}/${bold(locale.state)}
+┆     ${
+    to
+      ? `
+┆    • ${from}
+┆    ⇢ ${to}`
+      : from.replace('-', '')
+  }
+┆  └ ${repeat('─', bottomSize)} ┘
 ┆`;
 
   return output;
 }
 
-function fetchTracking(command) {
-  got(CORREIOS_SERVICE_URL + command, {json: true})
-    .then(function (response) {
-      if (response.body[0].erro) {
+function fetchTracking(command, flags) {
+  got(CORREIOS_SERVICE_URL + command, { json: true })
+    .then(function(response) {
+      const { body } = response;
+
+      if (body.error) {
         process.stdout.write(chalk.red.bold('Erro! ' + response.body[0].erro));
       }
-      let lastOnBot = response.body[0].evento.reverse();
-      lastOnBot.forEach(function (data) {
+
+      let { tracks } = body;
+      if (flags.last) {
+        const [first] = tracks;
+        tracks = [first];
+      }
+
+      tracks.forEach(function(data) {
         process.stdout.write(parse(data));
       });
     })
-    .catch(function (err) {
+    .catch(function(err) {
       if (cli.flags.verbose) {
         process.stderr.write(err);
       }
-      process.stdout.write(chalk.red.bold('Erro!'));
+      process.stdout.write(chalk.red.bold('Error!'));
       process.exit(1);
     });
 }
 
-process.on('SIGINT', function () {
+process.on('SIGINT', function() {
   process.stdout.write(chalk.red.bold('\n Operação cancelada!'));
   process.exit(1);
 });
 
-updateNotifier({pkg: cli.pkg}).notify();
+updateNotifier({ pkg: cli.pkg }).notify();
 
 function run() {
   if (!CODE_REGEX.test(cli.input[0]) && cli.input[0]) {
-    fetchTracking(storage.get(cli.input[0]));
+    fetchTracking(storage.get(cli.input[0]), cli.flags);
   } else if (cli.input[0]) {
-    fetchTracking(cli.input[0]);
+    fetchTracking(cli.input[0], cli.flags);
   } else if (cli.flags.clear) {
     storage.clear();
   } else if (cli.flags.remove) {
