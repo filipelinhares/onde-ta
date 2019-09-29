@@ -5,12 +5,11 @@ const chalk = require('chalk');
 const strl = require('string-length');
 const repeat = require('repeating');
 const meow = require('meow');
-const storage = require('./storage');
 const updateNotifier = require('update-notifier');
-const CODE_REGEX = /[a-z]{2}[0-9]{9}[a-z]{2}/gi;
+const storage = require('./storage');
+const CODE_REGEX = /[\w]{2}[\d]{9}[\w]{2}/gi;
 
-const bold = chalk.bold;
-const italic = chalk.italic;
+const { bold, italic } = chalk;
 const CORREIOS_SERVICE_URL =
   'https://correios-tracking.filipe.now.sh/api/track?code=';
 
@@ -37,11 +36,19 @@ const cli = meow(
     -l, --list     Listar todos os códigos salvos com um nome
 `,
   {
-    alias: {
-      s: 'save',
-      r: 'remove',
-      c: 'clear',
-      l: 'list',
+    flags: {
+      save: {
+        alias: 's',
+      },
+      remove: {
+        alias: 'r',
+      },
+      clear: {
+        alias: 'c',
+      },
+      list: {
+        alias: 'l',
+      },
     },
   },
 );
@@ -50,9 +57,8 @@ function parse(data) {
   const { locale, status, observation } = data;
 
   // Check for the longest line
-  const longestLine = Math.max.apply(
-    Math,
-    [
+  const longestLine = Math.max(
+    ...[
       locale.state,
       locale.city,
       observation.from,
@@ -75,16 +81,16 @@ function parse(data) {
 ┆  ┌ ${repeat(topSize, '─')} ┐
 ┆     ${bold(locale.city)}/${bold(locale.state)}
 ┆     ${
-    to
-      ? `
+  to
+    ? `
 ┆    • ${from}
 ┆    ⇢ ${to}`
-      : from.replace('-', '')
-  }
+    : from.replace('-', '')
+}
 ┆  └ ${repeat(bottomSize, '─')} ┘
 ┆`;
 
-console.log('obj');
+  console.log('obj');
 
   return output;
 }
@@ -108,11 +114,11 @@ function fetchTracking(command, flags) {
         process.stdout.write(parse(data));
       });
     })
-    .catch(function(err) {
+    .catch(function(error) {
       if (cli.flags.verbose) {
-        process.stderr.write(err);
+        process.stderr.write(error);
       }
-      console.log(err);
+
       process.stdout.write(chalk.red.bold('Error!'));
       process.exit(1);
     });
@@ -132,12 +138,16 @@ function run() {
     fetchTracking(cli.input[0], cli.flags);
   } else if (cli.flags.clear) {
     storage.clear();
+    process.exit();
   } else if (cli.flags.remove) {
     storage.del(cli.flags.remove);
+    process.exit();
   } else if (cli.flags.list) {
     storage.list();
+    process.exit();
   } else {
     cli.showHelp();
+    process.exit();
   }
 
   if (cli.flags.save) {

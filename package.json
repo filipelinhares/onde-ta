@@ -19,7 +19,7 @@
     "chalk": "^2.4.2",
     "got": "^9.6.0",
     "meow": "^5.0.0",
-    "node-persist": "2.x",
+    "node-persist": "1.x",
     "repeating": "^3.0.0",
     "string-length": "^3.1.0",
     "update-notifier": "^3.0.1"
@@ -31,6 +31,15 @@
     "xo": "^0.25.3"
   },
   "xo": {
-    "space": true
+    "space": true,
+    "envs": [
+      "node"
+    ],
+    "extends": [
+      "prettier"
+    ],
+    "plugins": [
+      "prettier"
+    ]
   }
 }
