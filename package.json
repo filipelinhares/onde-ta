@@ -16,19 +16,19 @@
     "busca"
   ],
   "dependencies": {
-    "chalk": "^1.1.1",
-    "got": "^5.0.0",
-    "meow": "^3.4.2",
-    "node-persist": "0.0.8",
-    "repeating": "^2.0.0",
-    "string-length": "^1.0.1",
-    "update-notifier": "^0.6.3"
+    "chalk": "^2.4.2",
+    "got": "^9.6.0",
+    "meow": "^5.0.0",
+    "node-persist": "2.x",
+    "repeating": "^3.0.0",
+    "string-length": "^3.1.0",
+    "update-notifier": "^3.0.1"
   },
   "scripts": {
     "test": "xo"
   },
   "devDependencies": {
-    "xo": "^0.10.1"
+    "xo": "^0.25.3"
   },
   "xo": {
     "space": true

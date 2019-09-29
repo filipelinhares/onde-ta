@@ -72,7 +72,7 @@ function parse(data) {
 ┆
 ┆  ${bold(italic(status))}
 ┆
-┆  ┌ ${repeat('─', topSize)} ┐
+┆  ┌ ${repeat(topSize, '─')} ┐
 ┆     ${bold(locale.city)}/${bold(locale.state)}
 ┆     ${
     to
@@ -81,8 +81,10 @@ function parse(data) {
 ┆    ⇢ ${to}`
       : from.replace('-', '')
   }
-┆  └ ${repeat('─', bottomSize)} ┘
+┆  └ ${repeat(bottomSize, '─')} ┘
 ┆`;
+
+console.log('obj');
 
   return output;
 }
@@ -110,6 +112,7 @@ function fetchTracking(command, flags) {
       if (cli.flags.verbose) {
         process.stderr.write(err);
       }
+      console.log(err);
       process.stdout.write(chalk.red.bold('Error!'));
       process.exit(1);
     });
