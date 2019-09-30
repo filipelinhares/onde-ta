@@ -90,8 +90,6 @@ function parse(data) {
 ┆  └ ${repeat(bottomSize, '─')} ┘
 ┆`;
 
-  console.log('obj');
-
   return output;
 }
 
@@ -101,7 +99,7 @@ function fetchTracking(command, flags) {
       const { body } = response;
 
       if (body.error) {
-        process.stdout.write(chalk.red.bold('Erro! ' + response.body[0].erro));
+        process.stdout.write(chalk.red.bold('ErroR! ' + response.body[0].erro));
       }
 
       let { tracks } = body;
@@ -119,6 +117,7 @@ function fetchTracking(command, flags) {
         process.stderr.write(error);
       }
 
+      console.log(error)
       process.stdout.write(chalk.red.bold('Error!'));
       process.exit(1);
     });
