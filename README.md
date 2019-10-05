@@ -1,10 +1,7 @@
 # onde-ta
-
-<img src="images/logo.svg" alt="Normalize Logo" align="right">
-
 > Rastreie suas encomendas
 
-![Build Status](https://travis-ci.org/filipelinhares/onde-ta.svg?branch=master)
+![Build Status](https://travis-ci.org/filipelinhares/onde-ta.svg?branch=master) ![npm version](https://img.shields.io/npm/v/onde-ta)
 
 ![Print screen of onde-ta output](https://i.imgur.com/NefmzbN.png)
 
