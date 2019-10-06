@@ -1,67 +1,52 @@
-const path = require('path');
-const os = require('os');
-const storage = require('node-persist');
+const Conf = require('conf');
 const chalk = require('chalk');
-const { exit } = process;
 
-storage.initSync({
-  dir: path.resolve(os.homedir(), '.onde-ta'),
-});
+const conf = new Conf()
 
-exports.save = function(key, value) {
-  storage.setItem(key, value, function() {
-    process.stdout.write(
-      `${chalk.green('✔')} Salvo ${chalk.bold(value)} como ${chalk.bold(key)}`,
-    );
-    storage.persistSync();
-    exit();
-  });
+exports.save = (key, value) => {
+  conf.set(key, value)
+  console.log(
+    `${chalk.green('✔')} Salvo ${chalk.bold(value)} como ${chalk.bold(key)}`,
+  );
 };
 
-exports.get = function(key) {
-  if (storage.getItemSync(key)) {
-    return storage.getItemSync(key);
+exports.get = (key) => {
+  if (conf.has(key)) {
+    return conf.get(key);
   }
 
-  process.stderr.write(
+  console.log(
     `${chalk.red('✖')} ${chalk.bold(key)} não existe, use ${chalk.bold(
       'onde-ta --save SEU_CÓDIGO',
       key,
     )} para criar`,
   );
-  exit();
 };
 
-exports.del = function(key) {
-  storage.removeItem(key, function() {
-    process.stdout.write(
-      `${chalk.green('✔')} ${chalk.bold(key)} removido com sucesso!`,
-    );
-    storage.persistSync();
-    exit();
-  });
+exports.del = (key) => {
+  conf.delete(key);
+  console.log(
+    `${chalk.green('✔')} ${chalk.bold(key)} removido com sucesso!`,
+  );
 };
 
-exports.clear = function() {
-  storage.clear(function() {
-    process.stdout.write(chalk.green('✔ Todos os códigos foram apagadas'));
-    storage.persistSync();
-    exit();
-  });
+exports.clear = () => {
+  conf.clear();
+  console.log(chalk.green('✔ Todos os códigos foram apagadas'));
 };
 
-exports.list = function() {
-  const packages = storage.keys();
-  if (packages.length === 0) {
-    process.stderr.write(
+exports.list = () => {
+  const storeKeys = Object.keys(conf.store);
+  if (storeKeys.length === 0) {
+    console.log(
       `${chalk.red('✖')} Você não tem nenhum código cadastrado`,
     );
-    exit();
   }
 
-  packages.forEach(function(pack) {
-    process.stdout.write(
-      `\n ${chalk.bold('⇢ ', pack)}: ${storage.getItemSync(pack)}`,
+  console.log(`Seus códigos: \n`)
+  storeKeys.forEach((key) => {
+    console.log(
+      `${chalk.bold('•', key)}: ${conf.get(key)}`,
     );
   });
 };

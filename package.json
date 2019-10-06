@@ -17,9 +17,9 @@
   ],
   "dependencies": {
     "chalk": "^2.4.2",
+    "conf": "^6.1.0",
     "got": "^9.6.0",
     "meow": "^5.0.0",
-    "node-persist": "1.x",
     "repeating": "^3.0.0",
     "string-length": "^3.1.0",
     "update-notifier": "^3.0.1"

@@ -7,9 +7,12 @@ const repeat = require('repeating');
 const meow = require('meow');
 const updateNotifier = require('update-notifier');
 const storage = require('./storage');
+
 const CODE_REGEX = /[\w]{2}[\d]{9}[\w]{2}/gi;
 
+const { exit } = process;
 const { bold, italic } = chalk;
+
 const CORREIOS_SERVICE_URL =
   'https://correios-tracking.filipe.now.sh/api/track?code=';
 
@@ -99,7 +102,7 @@ function fetchTracking(command, flags) {
       const { body } = response;
 
       if (body.error) {
-        process.stdout.write(chalk.red.bold('ErroR! ' + response.body[0].erro));
+        console.log(chalk.red.bold('ErroR! ' + response.body[0].erro));
       }
 
       let { tracks } = body;
@@ -109,23 +112,22 @@ function fetchTracking(command, flags) {
       }
 
       tracks.forEach(function(data) {
-        process.stdout.write(parse(data));
+        console.log(parse(data));
       });
     })
     .catch(function(error) {
       if (cli.flags.verbose) {
-        process.stderr.write(error);
+        console.log(error);
       }
 
-      console.log(error)
-      process.stdout.write(chalk.red.bold('Error!'));
-      process.exit(1);
+      console.log(chalk.red.bold('Error!'));
+      exit();
     });
 }
 
 process.on('SIGINT', function() {
-  process.stdout.write(chalk.red.bold('\n Operação cancelada!'));
-  process.exit(1);
+  console.log(chalk.red.bold('\n Operação cancelada!'));
+  exit();
 });
 
 updateNotifier({ pkg: cli.pkg }).notify();
@@ -133,25 +135,35 @@ updateNotifier({ pkg: cli.pkg }).notify();
 function run() {
   if (!CODE_REGEX.test(cli.input[0]) && cli.input[0]) {
     fetchTracking(storage.get(cli.input[0]), cli.flags);
-  } else if (cli.input[0]) {
+    exit();
+  }
+
+  if (cli.input[0]) {
     fetchTracking(cli.input[0], cli.flags);
-  } else if (cli.flags.clear) {
+    exit();
+  }
+
+  if (cli.flags.clear) {
     storage.clear();
-    process.exit();
-  } else if (cli.flags.remove) {
+    exit();
+  }
+
+  if (cli.flags.remove) {
     storage.del(cli.flags.remove);
-    process.exit();
-  } else if (cli.flags.list) {
+    exit();
+  }
+
+  if (cli.flags.list) {
     storage.list();
-    process.exit();
-  } else {
-    cli.showHelp();
-    process.exit();
+    exit();
   }
 
   if (cli.flags.save) {
     storage.save(cli.flags.save, cli.input[0]);
+    exit();
   }
+
+  cli.showHelp();
 }
 
 run(cli);
