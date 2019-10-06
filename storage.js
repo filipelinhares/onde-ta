@@ -38,7 +38,7 @@ exports.clear = () => {
 exports.list = () => {
   const storeKeys = Object.keys(conf.store);
   if (storeKeys.length === 0) {
-    console.log(
+    return console.log(
       `${chalk.red('✖')} Você não tem nenhum código cadastrado`,
     );
   }

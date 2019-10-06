@@ -97,7 +97,7 @@ function parse(data) {
 }
 
 function fetchTracking(command, flags) {
-  got(CORREIOS_SERVICE_URL + command, { json: true })
+  return got(CORREIOS_SERVICE_URL + command, { json: true })
     .then(function(response) {
       const { body } = response;
 
@@ -132,14 +132,9 @@ process.on('SIGINT', function() {
 
 updateNotifier({ pkg: cli.pkg }).notify();
 
-function run() {
-  if (!CODE_REGEX.test(cli.input[0]) && cli.input[0]) {
-    fetchTracking(storage.get(cli.input[0]), cli.flags);
-    exit();
-  }
-
-  if (cli.input[0]) {
-    fetchTracking(cli.input[0], cli.flags);
+async function run() {
+  if (cli.flags.save) {
+    storage.save(cli.flags.save, cli.input[0]);
     exit();
   }
 
@@ -158,8 +153,13 @@ function run() {
     exit();
   }
 
-  if (cli.flags.save) {
-    storage.save(cli.flags.save, cli.input[0]);
+  if (!CODE_REGEX.test(cli.input[0]) && cli.input[0]) {
+    await fetchTracking(storage.get(cli.input[0]), cli.flags);
+    exit();
+  }
+
+  if (cli.input[0]) {
+    await fetchTracking(cli.input[0], cli.flags);
     exit();
   }
 
